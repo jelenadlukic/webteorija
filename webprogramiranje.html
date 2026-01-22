@@ -1,0 +1,94 @@
+<!doctype html>
+<html lang="sr">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Web programiranje — Kviz</title>
+  <link rel="stylesheet" href="./style.css" />
+</head>
+
+<body>
+  <header class="topbar">
+    <div class="wrap">
+      <div class="brand">
+        <div class="brand__title">WEB PROGRAMIRANJE — KVIZ</div>
+        <div class="brand__sub"><a href="./index.html" style="color:inherit;text-decoration:underline;">Nazad na izbor</a></div>
+      </div>
+
+      <div class="scorebox" aria-live="polite">
+        <div class="scorebox__row">
+          <span>Poeni:</span>
+          <strong id="liveScore">0</strong>
+          <span>/</span>
+          <strong id="liveTotal">0</strong>
+        </div>
+        <div class="scorebox__row muted">
+          <span>Pitanje:</span>
+          <span id="liveIndex">0</span>
+          <span>/</span>
+          <span id="liveCount">0</span>
+        </div>
+      </div>
+    </div>
+  </header>
+
+  <main class="wrap">
+    <section id="screenStart" class="card">
+      <h1>Uputstvo</h1>
+      <p>
+        Svako pitanje nosi broj poena koji vidiš uz naslov pitanja. Koristi <i>Proveri</i> pre <i>Dalje</i> ako želiš objašnjenje.
+      </p>
+      <br>
+      <div class="row">
+        <button id="btnStart" class="btn btn--primary" type="button">Počni kviz</button>
+        <button id="btnResetAll" class="btn btn--ghost" type="button">Resetuj sve</button>
+      </div>
+    </section>
+
+    <section id="screenQuiz" class="card hidden" aria-live="polite">
+      <div class="quizHead">
+        <div>
+          <div id="qMeta" class="muted small"></div>
+          <h2 id="qText" class="qTitle"></h2>
+          <pre id="qCode" class="codeBlock hidden"></pre>
+        </div>
+        <div class="pointsPill" title="Broj poena">
+          <span id="qPoints">0</span>p
+        </div>
+      </div>
+
+      <form id="qForm" class="answers" autocomplete="off"></form>
+
+      <div id="feedback" class="feedback hidden" role="status" aria-live="polite"></div>
+
+      <div class="quizFooter">
+        <div class="row">
+            <button id="btnPrev" class="btn" type="button">Nazad</button>
+            <button id="btnNext" class="btn" type="button">Dalje</button>
+        </div>
+
+        <div class="row">
+            <button id="btnCheck" class="btn btn--primary" type="button">Proveri</button>
+            <button id="btnFinish" class="btn btn--danger" type="button">Završi</button>
+        </div>
+        </div>
+    </section>
+
+    <section id="screenResult" class="card hidden">
+      <h2>Rezultat</h2>
+      <p class="big">
+        Osvojeno: <strong id="finalScore">0</strong> / <strong id="finalTotal">0</strong> poena
+      </p>
+      <div id="summary" class="summary"></div>
+
+      <div class="row">
+        <button id="btnReview" class="btn btn--primary" type="button">Pregledaj pitanja</button>
+        <button id="btnRestart" class="btn" type="button">Počni ispočetka</button>
+      </div>
+    </section>
+  </main>
+
+  <script src="./pitanja/web-programiranje.js"></script>
+  <script src="./webprogramiranje.js"></script>
+</body>
+</html>
