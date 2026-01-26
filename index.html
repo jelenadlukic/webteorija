@@ -15,27 +15,108 @@
         <div class="brand__title">Pitanja za maturu</div>
         <div class="brand__sub">Jelena Lukić</div>
       </div>
+
+      <button class="btn btn--ghost" id="logoutBtn" type="button" hidden>Odjava</button>
     </div>
   </header>
 
-  <main class="wrap">
-  
+
+  <section class="auth" id="auth">
+    <div class="auth__card">
+      <h1 class="auth__title">Prijava</h1>
+      <p class="auth__desc">Unesi korisničko ime i šifru da pristupiš kvizu.</p>
+
+      <form class="auth__form" id="loginForm" autocomplete="off">
+        <label class="field">
+          <span class="field__label">Korisničko ime</span>
+          <input class="field__input" id="username" type="text" placeholder="Korisničko ime" required />
+        </label>
+
+        <label class="field">
+          <span class="field__label">Šifra</span>
+          <input class="field__input" id="password" type="password" placeholder="Šifra" required />
+        </label>
+
+        <div class="auth__error" id="loginError" aria-live="polite"></div>
+
+        <button class="btn btn--primary" type="submit">Uđi</button>
+      </form>
+
+      
+    </div>
+  </section>
+
+
+  <main class="wrap" id="app" hidden>
     <section class="grid">
       <a class="card tile" href="./webdizajn.html">
-        
         <h2 class="tile__title">Web dizajn</h2>
-       
         <div class="tile__cta">Otvori kviz</div>
       </a>
 
       <a class="card tile" href="./webprogramiranje.html">
-        
         <h2 class="tile__title">Web programiranje</h2>
-        
         <div class="tile__cta">Otvori kviz</div>
       </a>
     </section>
-
   </main>
+
+  <script>
+    (function () {
+      const AUTH_KEY = "matura_auth_ok";
+
+      const authSection = document.getElementById("auth");
+      const app = document.getElementById("app");
+      const logoutBtn = document.getElementById("logoutBtn");
+
+      const form = document.getElementById("loginForm");
+      const u = document.getElementById("username");
+      const p = document.getElementById("password");
+      const err = document.getElementById("loginError");
+
+      function showApp() {
+        authSection.hidden = true;
+        app.hidden = false;
+        logoutBtn.hidden = false;
+      }
+
+      function showLogin() {
+        authSection.hidden = false;
+        app.hidden = true;
+        logoutBtn.hidden = true;
+        err.textContent = "";
+        u.value = "";
+        p.value = "";
+        u.focus();
+      }
+
+      if (sessionStorage.getItem(AUTH_KEY) === "1") {
+        showApp();
+      } else {
+        showLogin();
+      }
+
+      form.addEventListener("submit", function (e) {
+        e.preventDefault();
+
+        const user = (u.value || "").trim();
+        const pass = (p.value || "").trim();
+
+        if (user === "admin" && pass === "admin") {
+          sessionStorage.setItem(AUTH_KEY, "1");
+          showApp();
+        } else {
+          err.textContent = "Pogrešan username ili šifra.";
+          p.value = "";
+          p.focus();
+        }
+      });
+
+      logoutBtn.addEventListener("click", function () {
+        sessionStorage.removeItem(AUTH_KEY);
+        showLogin();
+      });
+    })();
+  </script>
 </body>
 </html>
