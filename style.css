@@ -9,9 +9,33 @@
   --danger:#ff6b6b;
 }
 
-[hidden] { 
-  display: none !important; 
+[hidden]{ display:none !important; }
+
+
+html{
+  min-height:100%;
+  background: #0b1220; 
 }
+
+body{
+  min-height: 100svh;   
+  margin:0;
+  background: transparent; 
+  color: rgba(255,255,255,0.92);
+}
+
+
+body::before{
+  content:"";
+  position: fixed;
+  inset: 0;
+  z-index: -1;
+  background:
+    radial-gradient(900px 600px at 10% 10%, rgba(138,79,255,0.22), transparent 60%),
+    radial-gradient(800px 500px at 90% 20%, rgba(75,0,130,0.22), transparent 55%),
+    linear-gradient(180deg, #070b14 0%, #0b1220 60%, #070b14 100%);
+}
+
 
 *{box-sizing:border-box}
 html,body{height:100%}
@@ -67,28 +91,7 @@ p{line-height:1.55}
 .row{display:flex; gap:10px; align-items:center; flex-wrap:wrap}
 .spaceBetween{justify-content:space-between}
 
-.btn{
-  border:1px solid var(--line);
-  background:rgba(255,255,255,.04);
-  color:var(--text);
-  padding:10px 14px;
-  border-radius:14px;
-  cursor:pointer;
-}
-.btn:hover{background:rgba(255,255,255,.07)}
-.btn--primary{
-  border-color:rgba(110,168,255,.5);
-  background:rgba(110,168,255,.15);
-}
-.btn--primary:hover{background:rgba(110,168,255,.22)}
-.btn--ghost{
-  background:transparent;
-}
-.btn--danger{
-  border-color:rgba(255,107,107,.55);
-  background:rgba(255,107,107,.16);
-}
-.btn--danger:hover{background:rgba(255,107,107,.23)}
+
 
 .quizHead{
   display:flex;
@@ -159,7 +162,7 @@ p{line-height:1.55}
   .topbar .wrap{align-items:flex-start}
 }
 
-/* razmak između pitanja i dugmadi + lep “footer” */
+
 .quizFooter{
   margin-top: 16px;
   padding-top: 14px;
@@ -171,10 +174,10 @@ p{line-height:1.55}
   flex-wrap:wrap;
 }
 
-/* malo vazduha ispod odgovora */
+
 .answers{ margin-bottom: 10px; }
 
-/* na mobilnom: dugmad u dve linije, da ne bude zbijeno */
+
 @media (max-width: 640px){
   .quizFooter{
     justify-content: stretch;
@@ -200,7 +203,7 @@ p{line-height:1.55}
 
 .codeBlock{ tab-size: 2; }
 
-/* MATCH (повезивање) */
+
 .matchBox{
   display:grid;
   grid-template-columns: 1fr 1fr;
@@ -236,7 +239,7 @@ p{line-height:1.55}
   color:var(--text);
 }
 
-/* ORDER (редослед) */
+
 .orderRow{
   display:flex;
   gap:10px;
@@ -252,7 +255,6 @@ p{line-height:1.55}
   .matchBox{ grid-template-columns: 1fr; }
 }
 
-/* SELECT (падајући мени) - униформан изглед */
 .miniSelect,
 select.miniSelect{
   width: 92px;
@@ -283,34 +285,25 @@ select.miniSelect{
   box-shadow: 0 0 0 3px rgba(110,168,255,.20);
 }
 
-/* да не буде бледо кад је disabled */
+
 .miniSelect:disabled{
   opacity: .6;
   cursor: not-allowed;
 }
 
-/* Опције (ради у већини browser-а; неки игноришу) */
+
 .miniSelect option{
   background: #14182b;
   color: var(--text);
   font-weight: 500;
 }
 
-/* Мало шири select на мобилном да се лакше тапа */
+
 @media (max-width: 640px){
   .miniSelect{ width: 110px; }
 }
 
 
-:root{
-  --bg:#0f1220;
-  --text:#eef1ff;
-  --muted:#aeb7de;
-  --line:rgba(255,255,255,.10);
-  --accent:#6ea8ff;
-  --accent2:#a78bfa;
-  --danger:#ff6b6b;
-}
 
 *{box-sizing:border-box}
 html,body{height:100%}
@@ -431,18 +424,7 @@ p{margin:0;line-height:1.55}
   .grid{grid-template-columns: 1fr;}
 }
 
-:root {
-  --bg: #0b1220;
-  --card: rgba(255, 255, 255, 0.06);
-  --card2: rgba(255, 255, 255, 0.08);
-  --border: rgba(255, 255, 255, 0.12);
-  --text: rgba(255, 255, 255, 0.92);
-  --muted: rgba(255, 255, 255, 0.68);
-  --shadow: 0 14px 40px rgba(0, 0, 0, 0.35);
-  --radius: 18px;
-  --accent: #8a4fff;
-  --accent2: #4b0082;
-}
+
 
 * { box-sizing: border-box; }
 html, body { height: 100%; }
@@ -491,35 +473,135 @@ body {
 }
 
 /* Buttons */
-.btn {
-  appearance: none;
-  border: 1px solid var(--border);
-  background: transparent;
+.btn{
+  appearance:none;
+  -webkit-appearance:none;
+  border:1px solid rgba(255,255,255,.14);
+  background: rgba(255,255,255,.06);
   color: var(--text);
   padding: 10px 14px;
-  border-radius: 12px;
+  border-radius: 14px;
   cursor: pointer;
-  transition: transform 0.12s ease, background 0.12s ease, border-color 0.12s ease;
-  font-weight: 600;
+  font-weight: 700;
+  letter-spacing: .2px;
+  line-height: 1;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+
+  box-shadow:
+    0 10px 24px rgba(0,0,0,.28),
+    inset 0 1px 0 rgba(255,255,255,.08);
+
+  transition:
+    transform .12s ease,
+    background .12s ease,
+    border-color .12s ease,
+    box-shadow .12s ease,
+    filter .12s ease;
 }
-.btn:hover {
+
+.btn:hover{
+  background: rgba(255,255,255,.085);
+  border-color: rgba(255,255,255,.22);
   transform: translateY(-1px);
-  border-color: rgba(255,255,255,0.22);
-  background: rgba(255,255,255,0.06);
 }
-.btn:active { transform: translateY(0); }
 
-.btn--primary {
+.btn:active{
+  transform: translateY(0);
+  filter: brightness(.98);
+}
+
+.btn:disabled{
+  opacity: .55;
+  cursor: not-allowed;
+  transform: none;
+  box-shadow: none;
+}
+
+
+.btn:focus{
+  outline: none;
+}
+.btn:focus-visible{
+  box-shadow:
+    0 10px 24px rgba(0,0,0,.28),
+    inset 0 1px 0 rgba(255,255,255,.08),
+    0 0 0 4px rgba(110,168,255,.22);
+  border-color: rgba(110,168,255,.45);
+}
+
+
+.btn--sm{ padding: 8px 12px; border-radius: 12px; font-size: 13px; }
+.btn--lg{ padding: 12px 16px; border-radius: 16px; font-size: 15px; }
+
+
+.btn--primary{
   border: 0;
-  background: linear-gradient(135deg, var(--accent) 0%, var(--accent2) 100%);
-  box-shadow: 0 10px 22px rgba(138,79,255,0.22);
+  color: rgba(255,255,255,.95);
+  background: linear-gradient(135deg, rgba(110,168,255,.95), rgba(167,139,250,.90));
+  box-shadow:
+    0 14px 30px rgba(110,168,255,.20),
+    0 10px 24px rgba(0,0,0,.28),
+    inset 0 1px 0 rgba(255,255,255,.18);
 }
-.btn--primary:hover {
-  background: linear-gradient(135deg, rgba(138,79,255,0.95) 0%, rgba(75,0,130,0.95) 100%);
-}
-.btn--ghost { white-space: nowrap; }
 
-/* Auth */
+.btn--primary:hover{
+  transform: translateY(-1px);
+  filter: brightness(1.02);
+}
+
+.btn--primary:focus-visible{
+  box-shadow:
+    0 14px 30px rgba(110,168,255,.20),
+    0 10px 24px rgba(0,0,0,.28),
+    inset 0 1px 0 rgba(255,255,255,.18),
+    0 0 0 4px rgba(167,139,250,.22);
+}
+
+
+.btn--ghost{
+  background: transparent;
+  border-color: rgba(255,255,255,.14);
+  box-shadow: none;
+}
+.btn--ghost:hover{
+  background: rgba(255,255,255,.06);
+  box-shadow: inset 0 1px 0 rgba(255,255,255,.06);
+}
+
+
+.btn--danger{
+  border-color: rgba(255,107,107,.55);
+  background: rgba(255,107,107,.14);
+  box-shadow:
+    0 10px 24px rgba(0,0,0,.28),
+    inset 0 1px 0 rgba(255,255,255,.08);
+}
+.btn--danger:hover{
+  background: rgba(255,107,107,.20);
+  border-color: rgba(255,107,107,.75);
+}
+.btn--danger:focus-visible{
+  box-shadow:
+    0 10px 24px rgba(0,0,0,.28),
+    inset 0 1px 0 rgba(255,255,255,.08),
+    0 0 0 4px rgba(255,107,107,.22);
+}
+
+
+.btn .icon{
+  width: 18px;
+  height: 18px;
+  display: inline-block;
+}
+
+@media (max-width: 640px){
+  .btn{ width: 100%; }
+}
+
+
 .auth {
   min-height: calc(100vh - 70px);
   display: grid;
@@ -586,7 +668,7 @@ body {
   color: var(--muted);
 }
 
-/* Main grid */
+
 main.wrap { padding: 26px 0 50px; }
 
 .grid {
@@ -632,12 +714,7 @@ main.wrap { padding: 26px 0 50px; }
   font-weight: 700;
 }
 
-.tile__cta::after {
-  content: "→";
-  font-weight: 900;
-}
 
-/* Responsive */
 @media (max-width: 720px) {
   .grid { grid-template-columns: 1fr; }
   .topbar__inner { padding: 14px 0; }

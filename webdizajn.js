@@ -621,13 +621,13 @@ const questions = [
 
 ];
 
-// ------- State -------
-let idx = 0;
-let answers = new Map();   // id -> selected indices array
-let checked = new Set();   // ids that were checked
-let earned = new Map();    // id -> earned points
 
-// ------- Elements -------
+let idx = 0;
+let answers = new Map();   
+let checked = new Set();   
+let earned = new Map();     
+
+
 const elStart = document.getElementById("screenStart");
 const elQuiz = document.getElementById("screenQuiz");
 const elResult = document.getElementById("screenResult");
@@ -720,7 +720,6 @@ function normalizeNoSpaceLower(s){
   return normalizeQuotes(s).replace(/\s+/g, "").toLowerCase();
 }
 
-// већ си имала dedent за code block — ако немаш, додај:
 function dedent(str) {
   const lines = String(str).replace(/\r/g, "").split("\n");
   while (lines.length && lines[0].trim() === "") lines.shift();
@@ -765,7 +764,7 @@ function render() {
 
   elForm.innerHTML = "";
 
-  // SINGLE / MULTI
+
   if (question.type === "single" || question.type === "multi") {
     const inputType = question.type === "multi" ? "checkbox" : "radio";
     const name = `q_${question.id}`;
@@ -799,7 +798,7 @@ function render() {
     });
   }
 
-  // FILL
+
   else if (question.type === "fill") {
     const wrap = document.createElement("div");
     wrap.className = "answer";
@@ -828,7 +827,7 @@ function render() {
     elForm.appendChild(wrap);
   }
 
-  // MATCH
+
   else if (question.type === "match") {
     const box = document.createElement("div");
     box.className = "matchBox";
@@ -893,7 +892,7 @@ function render() {
     elForm.appendChild(box);
   }
 
-  // ORDER
+
   else if (question.type === "order") {
     const prevOrd = Array.isArray(prev) ? prev : Array(question.items.length).fill("");
 
@@ -986,7 +985,7 @@ function checkCurrent() {
 
   const selected = answers.get(q.id);
 
-  // --- Determine correctness by type ---
+
   let isCorrect = false;
 
   if (q.type === "single" || q.type === "multi") {
@@ -1001,12 +1000,12 @@ function checkCurrent() {
     isCorrect = arraysEqual(Array.isArray(selected) ? selected : [], q.correct);
   }
 
-  // --- Persist score for this question ---
+
   checked.add(q.id);
   earned.set(q.id, isCorrect ? q.points : 0);
   updateLive();
 
-  // --- Build feedback text ---
+
   let msg = "";
 
   if (isCorrect) {
@@ -1015,25 +1014,25 @@ function checkCurrent() {
   } else {
     msg += `НЕТАЧНО (+0p). `;
 
-    // Show correct explanation if present
+    
     if (q.explain && q.explain.correct) {
       msg += q.explain.correct;
     } else {
       msg += "ПОГРЕШАН ОДГОВОР.";
     }
 
-    // Extra details per type
+
     if (q.type === "single" || q.type === "multi") {
       const selArr = Array.isArray(selected) ? selected : [];
       const wrongNotes = [];
 
-      // selected wrong
+  
       for (const i of selArr) {
         if (!q.correct.includes(i) && q.explain && q.explain.wrong && q.explain.wrong[i]) {
           wrongNotes.push(`• ${q.explain.wrong[i]}`);
         }
       }
-      // missed correct
+    
       for (const i of q.correct) {
         if (!selArr.includes(i)) {
           wrongNotes.push(`• ТАЧАН ОДГОВОР: "${q.options[i]}".`);
@@ -1062,29 +1061,71 @@ function updateLive() {
 }
 
 function finish() {
-  // ako nešto nije provereno, tretira se kao 0 poena
   elFinalScore.textContent = currentEarnedTotal();
   elFinalTotal.textContent = totalPoints();
 
-  // sumarno: po pitanju
   elSummary.innerHTML = "";
-  for (const q of questions) {
-    const item = document.createElement("div");
-    item.className = "summaryItem";
 
+  for (const q of questions) {
     const got = earned.get(q.id) || 0;
-    const sel = answers.get(q.id) || [];
+    const user = answers.get(q.id);
     const corr = q.correct;
 
-    const selText = sel.length
-      ? sel.map(i => `(${i+1}) ${q.options[i]}`).join(" | ")
-      : "—";
+    let userText = "—";
+    let corrText = "—";
 
-    const corrText = corr.map(i => `(${i+1}) ${q.options[i]}`).join(" | ");
+    if (q.type === "single" || q.type === "multi") {
+      const ua = Array.isArray(user) ? user : [];
+      userText = ua.length ? ua.map(i => `(${i + 1}) ${q.options[i]}`).join(" | ") : "—";
+      corrText = Array.isArray(corr) ? corr.map(i => `(${i + 1}) ${q.options[i]}`).join(" | ") : "—";
+    }
 
+    else if (q.type === "fill") {
+      userText = (typeof user === "string" && user.trim()) ? user.trim() : "—";
+     
+      corrText = (q.explain && q.explain.correct) ? q.explain.correct : (Array.isArray(q.accept) && q.accept[0]) ? q.accept[0] : "—";
+    }
+
+    else if (q.type === "match") {
+      
+      const ua = Array.isArray(user) ? user : [];
+      const ca = Array.isArray(corr) ? corr : [];
+
+      userText = q.match?.right?.map((rLabel, rIdx) => {
+        const pick = ua[rIdx];
+        const leftTxt = (pick && q.match?.left?.[pick - 1]) ? q.match.left[pick - 1] : "—";
+        return `${rLabel} → ${pick || "—"} (${leftTxt})`;
+      }).join(" | ") || "—";
+
+      corrText = q.match?.right?.map((rLabel, rIdx) => {
+        const pick = ca[rIdx];
+        const leftTxt = (pick && q.match?.left?.[pick - 1]) ? q.match.left[pick - 1] : "—";
+        return `${rLabel} → ${pick || "—"} (${leftTxt})`;
+      }).join(" | ") || "—";
+    }
+
+    else if (q.type === "order") {
+      
+      const ua = Array.isArray(user) ? user : [];
+      const ca = Array.isArray(corr) ? corr : [];
+
+     
+      const buildOrderView = (arr) => {
+        if (!Array.isArray(arr) || !arr.length) return "—";
+        const pairs = q.items.map((txt, i) => ({ txt, pos: arr[i] }));
+        pairs.sort((a, b) => (Number(a.pos) || 999) - (Number(b.pos) || 999));
+        return pairs.map(p => `${p.pos || "—"}) ${p.txt}`).join(" | ");
+      };
+
+      userText = buildOrderView(ua);
+      corrText = buildOrderView(ca);
+    }
+
+    const item = document.createElement("div");
+    item.className = "summaryItem";
     item.innerHTML = `
-      <strong>Задатак ${q.id} — ${got}/${q.points}p</strong>
-      <div class="muted small">Tvoj odgovor: ${escapeHtml(selText)}</div>
+      <strong>Zadatak ${q.id} — ${got}/${q.points}p</strong>
+      <div class="muted small">Tvoj odgovor: ${escapeHtml(userText)}</div>
       <div class="muted small">Tačno: ${escapeHtml(corrText)}</div>
     `;
     elSummary.appendChild(item);
@@ -1092,6 +1133,7 @@ function finish() {
 
   setScreen("result");
 }
+
 
 function escapeHtml(str){
   return String(str)
@@ -1143,7 +1185,7 @@ btnFinish.addEventListener("click", () => {
 });
 
 btnReview.addEventListener("click", () => {
-  // vrati na kviz, ali ostavi rezultate
+  
   setScreen("quiz");
   idx = 0;
   render();

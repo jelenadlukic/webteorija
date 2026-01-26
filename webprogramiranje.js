@@ -1,12 +1,12 @@
 const questions = window.QUIZ_PITANJA_WEB_PROGRAMIRANJE || [];
 
-// ------- State -------
-let idx = 0;
-let answers = new Map();   // id -> answer (array or string)
-let checked = new Set();   // ids checked
-let earned = new Map();    // id -> earned points
 
-// ------- Elements -------
+let idx = 0;
+let answers = new Map();   
+let checked = new Set();   
+let earned = new Map();    
+
+
 const elStart = document.getElementById("screenStart");
 const elQuiz = document.getElementById("screenQuiz");
 const elResult = document.getElementById("screenResult");
@@ -36,7 +36,7 @@ const elSummary = document.getElementById("summary");
 const btnReview = document.getElementById("btnReview");
 const btnRestart = document.getElementById("btnRestart");
 
-// ------- Helpers -------
+
 function fmtPts(n){
   const s = Number.isInteger(n) ? String(n) : String(n);
   return s.replace(".", ",");
@@ -108,7 +108,7 @@ function escapeHtml(str){
     .replaceAll("'","&#39;");
 }
 
-// ------- Render -------
+
 function render() {
   const question = questions[idx];
   const prev = answers.get(question.id);
@@ -137,7 +137,7 @@ function render() {
 
   elForm.innerHTML = "";
 
-  // SINGLE / MULTI
+
   if (question.type === "single" || question.type === "multi") {
     const inputType = question.type === "multi" ? "checkbox" : "radio";
     const name = `q_${question.id}`;
@@ -171,7 +171,7 @@ function render() {
     });
   }
 
-  // FILL
+
   else if (question.type === "fill") {
     const wrap = document.createElement("div");
     wrap.className = "answer";
@@ -200,7 +200,7 @@ function render() {
     elForm.appendChild(wrap);
   }
 
-  // MATCH
+
   else if (question.type === "match") {
     const box = document.createElement("div");
     box.className = "matchBox";
@@ -265,7 +265,7 @@ function render() {
     elForm.appendChild(box);
   }
 
-  // ORDER
+
   else if (question.type === "order") {
     const prevOrd = Array.isArray(prev) ? prev : Array(question.items.length).fill("");
 
@@ -312,7 +312,7 @@ function render() {
   btnNext.disabled = idx === questions.length - 1;
 }
 
-// ------- Collect answer -------
+
 function collectAnswer() {
   const question = questions[idx];
 
@@ -344,7 +344,7 @@ function collectAnswer() {
   }
 }
 
-// ------- Feedback -------
+
 function showFeedback(isCorrect, details) {
   elFeedback.classList.remove("hidden");
   elFeedback.classList.toggle("ok", isCorrect);
@@ -414,7 +414,7 @@ function updateLive() {
   elLiveScore.textContent = fmtPts(currentEarnedTotal());
 }
 
-// ------- Finish / summary (ради за све типове) -------
+
 function finish() {
   elFinalScore.textContent = fmtPts(currentEarnedTotal());
   elFinalTotal.textContent = fmtPts(totalPoints());
@@ -464,7 +464,7 @@ function resetAll() {
   render();
 }
 
-// ------- Events -------
+
 btnStart.addEventListener("click", () => {
   setScreen("quiz");
   render();
@@ -502,7 +502,7 @@ btnRestart.addEventListener("click", () => {
   setScreen("start");
 });
 
-// Init
+
 elLiveTotal.textContent = fmtPts(totalPoints());
 elLiveCount.textContent = questions.length;
 elLiveIndex.textContent = "0";
