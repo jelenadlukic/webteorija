@@ -377,10 +377,10 @@ function checkCurrent() {
   let msg = "";
 
   if (isCorrect) {
-    msg += `ТАЧНО (+${fmtPts(question.points)}p). `;
+    msg += `ТАЧНО (+${fmtPts(question.points)}p). \n`;
     msg += question.explain?.correct || "Тачан одговор.";
   } else {
-    msg += `НЕТАЧНО (+0p). `;
+    msg += `НЕТАЧНО (+0p). \n`;
     msg += question.explain?.correct || "Погрешан одговор.";
 
     if (question.type === "single" || question.type === "multi") {
@@ -392,7 +392,7 @@ function checkCurrent() {
         if (!question.correct.includes(i) && w) notes.push(w);
       }
       for (const i of question.correct) {
-        if (!selArr.includes(i)) notes.push(`ТАЧАН ОДГОВОР: ${question.options[i]}`);
+        if (!selArr.includes(i)) notes.push(`ТАЧАН ОДГОВОР: \n${question.options[i]} `);
       }
       if (notes.length) msg += "\n" + notes.join("\n");
     }

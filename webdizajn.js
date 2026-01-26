@@ -1009,10 +1009,10 @@ function checkCurrent() {
   let msg = "";
 
   if (isCorrect) {
-    msg += `ТАЧНО (+${q.points}p). `;
+    msg += `ТАЧНО (+${q.points}p). \n`;
     msg += (q.explain && q.explain.correct) ? q.explain.correct : "Tačan odgovor.";
   } else {
-    msg += `НЕТАЧНО (+0p). `;
+    msg += `НЕТАЧНО (+0p).  \n` ;
 
     
     if (q.explain && q.explain.correct) {
@@ -1029,13 +1029,13 @@ function checkCurrent() {
   
       for (const i of selArr) {
         if (!q.correct.includes(i) && q.explain && q.explain.wrong && q.explain.wrong[i]) {
-          wrongNotes.push(`• ${q.explain.wrong[i]}`);
+          wrongNotes.push(`${q.explain.wrong[i]}`);
         }
       }
     
       for (const i of q.correct) {
         if (!selArr.includes(i)) {
-          wrongNotes.push(`• ТАЧАН ОДГОВОР: "${q.options[i]}".`);
+          wrongNotes.push(`\nТАЧАН ОДГОВОР: \n"${q.options[i]}". `);
         }
       }
 
@@ -1044,11 +1044,11 @@ function checkCurrent() {
     else if (q.type === "fill") {
       const accepted = Array.isArray(q.accept) ? q.accept : [];
       if (accepted.length) {
-        msg += "\n• Aдекватано решење: " + accepted[0];
+        msg += "\n Aдекватано решење: " + accepted[0];
       }
     }
     else if (q.type === "match" || q.type === "order") {
-      msg += "\n• Тачно решење: " + JSON.stringify(q.correct);
+      msg += "\n Тачно решење: " + JSON.stringify(q.correct);
     }
   }
 
