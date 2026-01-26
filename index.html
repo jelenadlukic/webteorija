@@ -62,61 +62,59 @@
   </main>
 
   <script>
-    (function () {
-      const AUTH_KEY = "matura_auth_ok";
+  (function () {
+    const AUTH_KEY = "matura_auth_ok";
 
-      const authSection = document.getElementById("auth");
-      const app = document.getElementById("app");
-      const logoutBtn = document.getElementById("logoutBtn");
+    const authSection = document.getElementById("auth");
+    const app = document.getElementById("app");
+    const logoutBtn = document.getElementById("logoutBtn");
 
-      const form = document.getElementById("loginForm");
-      const u = document.getElementById("username");
-      const p = document.getElementById("password");
-      const err = document.getElementById("loginError");
+    const form = document.getElementById("loginForm");
+    const u = document.getElementById("username");
+    const p = document.getElementById("password");
+    const err = document.getElementById("loginError");
 
-      function showApp() {
-        authSection.hidden = true;
-        app.hidden = false;
-        logoutBtn.hidden = false;
-      }
+    function showApp() {
+      authSection.hidden = true;
+      app.hidden = false;
+      logoutBtn.hidden = false;
+    }
 
-      function showLogin() {
-        authSection.hidden = false;
-        app.hidden = true;
-        logoutBtn.hidden = true;
-        err.textContent = "";
-        u.value = "";
-        p.value = "";
-        u.focus();
-      }
+    function showLogin() {
+      authSection.hidden = false;
+      app.hidden = true;
+      logoutBtn.hidden = true;
+      err.textContent = "";
+      u.value = "";
+      p.value = "";
+      u.focus();
+    }
 
-      if (sessionStorage.getItem(AUTH_KEY) === "1") {
+    if (sessionStorage.getItem(AUTH_KEY) === "1") showApp();
+    else showLogin();
+
+    form.addEventListener("submit", function (e) {
+      e.preventDefault();
+
+      const user = (u.value || "").trim().toLowerCase();
+      const pass = (p.value || "").trim(); 
+
+      if (user === "admin" && pass === "admin") {
+        sessionStorage.setItem(AUTH_KEY, "1");
         showApp();
       } else {
-        showLogin();
+        err.textContent = "Pogrešan username ili šifra.";
+        p.value = "";
+        p.focus();
       }
+    });
 
-      form.addEventListener("submit", function (e) {
-        e.preventDefault();
+    logoutBtn.addEventListener("click", function () {
+      sessionStorage.removeItem(AUTH_KEY);
+      showLogin();
+    });
+  })();
+</script>
 
-        const user = (u.value || "").trim();
-        const pass = (p.value || "").trim();
-
-        if (user === "admin" && pass === "admin") {
-          sessionStorage.setItem(AUTH_KEY, "1");
-          showApp();
-        } else {
-          err.textContent = "Pogrešan username ili šifra.";
-          p.value = "";
-          p.focus();
-        }
-      });
-
-      logoutBtn.addEventListener("click", function () {
-        sessionStorage.removeItem(AUTH_KEY);
-        showLogin();
-      });
-    })();
-  </script>
 </body>
 </html>

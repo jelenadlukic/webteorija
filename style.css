@@ -9,6 +9,9 @@
   --danger:#ff6b6b;
 }
 
+[hidden] { 
+  display: none !important; 
+}
 
 *{box-sizing:border-box}
 html,body{height:100%}
@@ -639,3 +642,4 @@ main.wrap { padding: 26px 0 50px; }
   .grid { grid-template-columns: 1fr; }
   .topbar__inner { padding: 14px 0; }
 }
+
