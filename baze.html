@@ -6,15 +6,13 @@
   <title>Baze podataka</title>
   <link rel="stylesheet" href="./style.css" />
 </head>
-
 <body>
 
   <header class="topbar">
     <div class="wrap">
       <div class="brand">
         <div class="brand__title">BAZE PODATAKA</div>
-         <div class="brand__sub">Zadaci 188–207</div>
-        <br>
+        <div class="brand__sub">Zadaci 208–249</div>
       </div>
 
       <div class="scorebox" aria-live="polite">
@@ -40,7 +38,7 @@
       <p>
         Svako pitanje nosi broj poena koji vidiš uz naslov pitanja. Koristi <i>Proveri</i> pre <i>Dalje</i> ako želiš objašnjenje.
       </p>
-      <br>
+
       <div class="row">
         <button id="btnStart" class="btn btn--primary" type="button">Počni kviz</button>
         <button id="btnResetAll" class="btn btn--ghost" type="button">Resetuj sve</button>
@@ -49,11 +47,13 @@
 
     <section id="screenQuiz" class="card hidden" aria-live="polite">
       <div class="quizHead">
-        <div>
+        <div class="quizHead__main">
           <div id="qMeta" class="muted small"></div>
           <h2 id="qText" class="qTitle"></h2>
+          <div id="qRich" class="qRich"></div>
           <pre id="qCode" class="codeBlock hidden"></pre>
         </div>
+
         <div class="pointsPill" title="Broj poena">
           <span id="qPoints">0</span>p
         </div>
@@ -65,15 +65,15 @@
 
       <div class="quizFooter">
         <div class="row">
-            <button id="btnPrev" class="btn" type="button">Nazad</button>
-            <button id="btnNext" class="btn" type="button">Dalje</button>
+          <button id="btnPrev" class="btn" type="button">Nazad</button>
+          <button id="btnNext" class="btn" type="button">Dalje</button>
         </div>
 
         <div class="row">
-            <button id="btnCheck" class="btn btn--primary" type="button">Proveri</button>
-            <button id="btnFinish" class="btn btn--danger" type="button">Završi</button>
+          <button id="btnCheck" class="btn btn--primary" type="button">Proveri</button>
+          <button id="btnFinish" class="btn btn--danger" type="button">Završi</button>
         </div>
-        </div>
+      </div>
     </section>
 
     <section id="screenResult" class="card hidden">
@@ -81,6 +81,7 @@
       <p class="big">
         Osvojeno: <strong id="finalScore">0</strong> / <strong id="finalTotal">0</strong> poena
       </p>
+
       <div id="summary" class="summary"></div>
 
       <div class="row">
