@@ -1045,30 +1045,30 @@ select * into StrucneSkole from Skola
     }
   },
   {
-    id: 252,
-    points: 2.5,
-    type: "match",
-    text: "Ispisati na crtama ispred relacija redni broj pod kojim je navedena odgovarajuća kardinalnost veze.",
-    match: {
-      left: [
-        "1. 1 : 1",
-        "2. 1 : M",
-        "3. M : M"
-      ],
-      right: [
-        "VLASNIK – BROJ TELEFONA",
-        "NASTAVNIK – PREDMET",
-        "OSOBA – PASOŠ",
-        "KUPAC – MODEL AUTOMOBILA",
-        "UTAKMICA – GRAD DOMAĆIN"
-      ]
-    },
-    correct: [1, 3, 1, 3, 1],
-    explain: {
-      correct: "Tačno: VLASNIK – BROJ TELEFONA → 1 | NASTAVNIK – PREDMET → 3 | OSOBA – PASOŠ → 1 | KUPAC – MODEL AUTOMOBILA → 3 | UTAKMICA – GRAD DOMAĆIN → 1",
-      wrong: []
-    }
+  id: 252,
+  points: 2.5,
+  type: "match",
+  text: "Ispisati na crtama ispred relacija redni broj pod kojim je navedena odgovarajuća kardinalnost veze.",
+  match: {
+    left: [
+      "1. 1 : 1",
+      "2. 1 : M",
+      "3. M : M"
+    ],
+    right: [
+      "VLASNIK – BROJ TELEFONA (SLUŽBENI)",
+      "NASTAVNIK – PREDMET",
+      "OSOBA – PASOŠ",
+      "KUPAC – MODEL AUTOMOBILA",
+      "UTAKMICA – GRAD DOMAĆIN"
+    ]
   },
+  correct: [1, 3, 1, 3, 2],
+  explain: {
+    correct: "VLASNIK – BROJ TELEFONA (SLUŽBENI) → 1 : 1 | NASTAVNIK – PREDMET → M : M | OSOBA – PASOŠ → 1 : 1 | KUPAC – MODEL AUTOMOBILA → M : M | UTAKMICA – GRAD DOMAĆIN → 1 : M",
+    wrong: []
+  }
+},
   {
     id: 253,
     points: 3,
