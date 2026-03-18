@@ -12,6 +12,7 @@
     document.getElementById("goWebDizajn"),
     document.getElementById("goWebProg"),
     document.getElementById("goBaze"),
+    document.getElementById("goSimulacija"),
   ].filter(Boolean);
 
   function setLocked(locked) {

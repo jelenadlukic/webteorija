@@ -3,15 +3,15 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width,initial-scale=1" />
-  <title>WEB DIZAJN</title>
+  <title>Simulacija mature</title>
   <link rel="stylesheet" href="./style.css" />
 </head>
 <body>
   <header class="topbar">
     <div class="wrap">
       <div class="brand">
-        <div class="brand__title">WEB DIZAJN</div>
-        <div class="brand__sub">Zadaci 161–187</div>
+        <div class="brand__title">SIMULACIJA MATURE</div>
+        <div class="brand__sub">10 pitanja iz svake oblasti</div>
       </div>
 
       <div class="scorebox" aria-live="polite">
@@ -34,9 +34,9 @@
   <main class="wrap">
     <section id="screenStart" class="card">
       <h1>Uputstvo</h1>
-      <p>Svako pitanje nosi broj poena koji vidiš uz naslov pitanja. Koristi <i>Proveri</i> pre <i>Dalje</i> ako želiš objašnjenje.</p>
+      <p>Simulacija sadrži ukupno 30 pitanja: 10 iz web dizajna, 10 iz web programiranja i 10 iz baza podataka. Pitanja i njihov redosled se mešaju pri svakom novom pokušaju.</p>
       <div class="row">
-        <button id="btnStart" class="btn btn--primary" type="button">Počni kviz</button>
+        <button id="btnStart" class="btn btn--primary" type="button">Počni simulaciju</button>
         <button id="btnResetAll" class="btn btn--ghost" type="button">Resetuj sve</button>
       </div>
     </section>
@@ -70,8 +70,8 @@
     <section id="screenResult" class="card hidden">
       <h2>Rezultat</h2>
       <p class="big">Osvojeno: <strong id="finalScore">0</strong> / <strong id="finalTotal">0</strong> poena</p>
-      <div class="gradeBox hidden"><span>Ocena:</span> <strong id="finalGrade">1</strong></div>
-      <p id="gradeScale" class="muted small hidden"></p>
+      <div class="gradeBox"><span>Ocena:</span> <strong id="finalGrade">1</strong></div>
+      <p id="gradeScale" class="muted small"></p>
       <div id="summary" class="summary"></div>
       <div class="row">
         <button id="btnReview" class="btn btn--primary" type="button">Pregledaj pitanja</button>
@@ -81,6 +81,17 @@
   </main>
 
   <script src="./pitanja/web-dizajn.js"></script>
+  <script src="./pitanja/web-programiranje.js"></script>
+  <script src="./pitanja/baze-podaci.js"></script>
+  <script src="./pitanja/simulacija-mature.js"></script>
+  <script>
+    window.QUIZ_SETTINGS = {
+      showGrade: true,
+      questionFactory: function () {
+        return window.QUIZ_PITANJA_SIMULACIJA_MATURE || [];
+      }
+    };
+  </script>
   <script src="./quiz-engine.js"></script>
 </body>
 </html>

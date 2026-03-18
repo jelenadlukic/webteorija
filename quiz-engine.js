@@ -1,10 +1,32 @@
-const baseQuestions =
-  window.questions ||
-  window.QUIZ_PITANJA_BAZE_PODATAKA ||
-  window.QUIZ_PITANJA_WEB_PROGRAMIRANJE ||
-  [];
+const quizSettings = window.QUIZ_SETTINGS || {};
 
-let questions = shuffleArray(baseQuestions);
+function shuffleArray(arr) {
+  const copy = [...(Array.isArray(arr) ? arr : [])];
+  for (let i = copy.length - 1; i > 0; i--) {
+    const j = Math.floor(Math.random() * (i + 1));
+    [copy[i], copy[j]] = [copy[j], copy[i]];
+  }
+  return copy;
+}
+
+function getBaseQuestions() {
+  if (typeof quizSettings.questionFactory === "function") {
+    const produced = quizSettings.questionFactory();
+    return Array.isArray(produced) ? produced : [];
+  }
+
+  return (
+    window.QUIZ_PITANJA_BAZE_PODATAKA ||
+    window.QUIZ_PITANJA_WEB_PROGRAMIRANJE ||
+    window.QUIZ_PITANJA_WEB_DIZAJN ||
+    window.questions ||
+    (typeof questions !== "undefined" ? questions : []) ||
+    []
+  );
+}
+
+let baseQuestions = getBaseQuestions();
+let quizQuestions = shuffleArray(baseQuestions);
 let idx = 0;
 let answers = new Map();
 let checked = new Set();
@@ -39,15 +61,8 @@ const elFinalTotal = document.getElementById("finalTotal");
 const elSummary = document.getElementById("summary");
 const btnReview = document.getElementById("btnReview");
 const btnRestart = document.getElementById("btnRestart");
-
-function shuffleArray(arr) {
-  const copy = [...arr];
-  for (let i = copy.length - 1; i > 0; i--) {
-    const j = Math.floor(Math.random() * (i + 1));
-    [copy[i], copy[j]] = [copy[j], copy[i]];
-  }
-  return copy;
-}
+const elFinalGrade = document.getElementById("finalGrade");
+const elGradeScale = document.getElementById("gradeScale");
 
 function fmtPts(n) {
   const s = Number.isInteger(n) ? String(n) : String(n);
@@ -55,19 +70,19 @@ function fmtPts(n) {
 }
 
 function totalPoints() {
-  return questions.reduce((s, q) => s + Number(q.points || 0), 0);
+  return quizQuestions.reduce((s, q) => s + Number(q.points || 0), 0);
 }
 
 function currentEarnedTotal() {
   let s = 0;
-  for (const q of questions) s += earned.get(q.id) || 0;
+  for (const q of quizQuestions) s += earned.get(q.id) || 0;
   return s;
 }
 
 function setScreen(which) {
-  elStart.classList.toggle("hidden", which !== "start");
-  elQuiz.classList.toggle("hidden", which !== "quiz");
-  elResult.classList.toggle("hidden", which !== "result");
+  if (elStart) elStart.classList.toggle("hidden", which !== "start");
+  if (elQuiz) elQuiz.classList.toggle("hidden", which !== "quiz");
+  if (elResult) elResult.classList.toggle("hidden", which !== "result");
 }
 
 function sameSet(a, b) {
@@ -184,7 +199,8 @@ function renderSqlBlock(sql) {
 }
 
 function renderQuestionContent(question) {
-  elQText.textContent = question.text || "";
+  if (elQText) elQText.textContent = question.text || "";
+  if (!elQRich) return;
   elQRich.innerHTML = "";
 
   let html = "";
@@ -224,46 +240,53 @@ function renderQuestionContent(question) {
 }
 
 function render() {
-  if (!questions.length) {
-    elQMeta.textContent = "";
-    elQText.textContent = "Nema učitanih pitanja.";
-    elQRich.innerHTML = "";
-    elQCode.textContent = "";
-    elQCode.classList.add("hidden");
-    elForm.innerHTML = "";
-    elQPoints.textContent = "0";
-    btnPrev.disabled = true;
-    btnNext.disabled = true;
-    btnCheck.disabled = true;
-    btnFinish.disabled = true;
+  if (!quizQuestions.length) {
+    if (elQMeta) elQMeta.textContent = "";
+    if (elQText) elQText.textContent = "Nema učitanih pitanja.";
+    if (elQRich) elQRich.innerHTML = "";
+    if (elQCode) {
+      elQCode.textContent = "";
+      elQCode.classList.add("hidden");
+    }
+    if (elForm) elForm.innerHTML = "";
+    if (elQPoints) elQPoints.textContent = "0";
+    if (btnPrev) btnPrev.disabled = true;
+    if (btnNext) btnNext.disabled = true;
+    if (btnCheck) btnCheck.disabled = true;
+    if (btnFinish) btnFinish.disabled = true;
     return;
   }
 
-  const question = questions[idx];
+  const question = quizQuestions[idx];
   const prev = answers.get(question.id);
 
-  elQMeta.textContent = `Zadatak ${question.id}`;
+  if (elQMeta) elQMeta.textContent = `Zadatak ${question.id}`;
   renderQuestionContent(question);
 
-  if (question.code) {
-    elQCode.textContent = dedent(question.code);
-    elQCode.classList.remove("hidden");
-  } else {
-    elQCode.textContent = "";
-    elQCode.classList.add("hidden");
+  if (elQCode) {
+    if (question.code) {
+      elQCode.textContent = dedent(question.code);
+      elQCode.classList.remove("hidden");
+    } else {
+      elQCode.textContent = "";
+      elQCode.classList.add("hidden");
+    }
   }
 
-  elQPoints.textContent = fmtPts(question.points);
+  if (elQPoints) elQPoints.textContent = fmtPts(question.points);
 
-  elLiveTotal.textContent = fmtPts(totalPoints());
-  elLiveCount.textContent = questions.length;
-  elLiveIndex.textContent = idx + 1;
-  elLiveScore.textContent = fmtPts(currentEarnedTotal());
+  if (elLiveTotal) elLiveTotal.textContent = fmtPts(totalPoints());
+  if (elLiveCount) elLiveCount.textContent = quizQuestions.length;
+  if (elLiveIndex) elLiveIndex.textContent = idx + 1;
+  if (elLiveScore) elLiveScore.textContent = fmtPts(currentEarnedTotal());
 
-  elFeedback.classList.add("hidden");
-  elFeedback.classList.remove("ok", "bad");
-  elFeedback.textContent = "";
+  if (elFeedback) {
+    elFeedback.classList.add("hidden");
+    elFeedback.classList.remove("ok", "bad");
+    elFeedback.textContent = "";
+  }
 
+  if (!elForm) return;
   elForm.innerHTML = "";
 
   if (question.type === "single" || question.type === "multi") {
@@ -431,16 +454,16 @@ function render() {
     });
   }
 
-  btnPrev.disabled = idx === 0;
-  btnNext.disabled = idx === questions.length - 1;
-  btnCheck.disabled = false;
-  btnFinish.disabled = false;
+  if (btnPrev) btnPrev.disabled = idx === 0;
+  if (btnNext) btnNext.disabled = idx === quizQuestions.length - 1;
+  if (btnCheck) btnCheck.disabled = false;
+  if (btnFinish) btnFinish.disabled = false;
 }
 
 function collectAnswer() {
-  if (!questions.length) return;
+  if (!quizQuestions.length || !elForm) return;
 
-  const question = questions[idx];
+  const question = quizQuestions[idx];
 
   if (question.type === "single" || question.type === "multi") {
     const inputs = [...elForm.querySelectorAll("input")];
@@ -477,6 +500,7 @@ function collectAnswer() {
 }
 
 function showFeedback(isCorrect, details) {
+  if (!elFeedback) return;
   elFeedback.classList.remove("hidden");
   elFeedback.classList.toggle("ok", isCorrect);
   elFeedback.classList.toggle("bad", !isCorrect);
@@ -484,9 +508,9 @@ function showFeedback(isCorrect, details) {
 }
 
 function checkCurrent() {
-  if (!questions.length) return;
+  if (!quizQuestions.length) return;
 
-  const question = questions[idx];
+  const question = quizQuestions[idx];
   collectAnswer();
 
   const selected = answers.get(question.id);
@@ -547,16 +571,47 @@ function checkCurrent() {
 }
 
 function updateLive() {
-  elLiveScore.textContent = fmtPts(currentEarnedTotal());
+  if (elLiveScore) elLiveScore.textContent = fmtPts(currentEarnedTotal());
+}
+
+function calculateGrade(score, total) {
+  if (!total) return 1;
+  const percent = (score / total) * 100;
+  if (percent >= 90) return 5;
+  if (percent >= 78) return 4;
+  if (percent >= 64) return 3;
+  if (percent >= 50) return 2;
+  return 1;
 }
 
 function finish() {
-  elFinalScore.textContent = fmtPts(currentEarnedTotal());
-  elFinalTotal.textContent = fmtPts(totalPoints());
+  const score = currentEarnedTotal();
+  const total = totalPoints();
 
-  elSummary.innerHTML = "";
+  if (elFinalScore) elFinalScore.textContent = fmtPts(score);
+  if (elFinalTotal) elFinalTotal.textContent = fmtPts(total);
 
-  for (const q of questions) {
+  if (elFinalGrade) {
+    if (quizSettings.showGrade) {
+      elFinalGrade.textContent = calculateGrade(score, total);
+      elFinalGrade.closest('.gradeBox')?.classList.remove('hidden');
+    } else {
+      elFinalGrade.closest('.gradeBox')?.classList.add('hidden');
+    }
+  }
+
+  if (elGradeScale) {
+    if (quizSettings.showGrade) {
+      elGradeScale.textContent = 'Skala: 0–49% = 1, 50–63% = 2, 64–77% = 3, 78–89% = 4, 90–100% = 5';
+      elGradeScale.classList.remove('hidden');
+    } else {
+      elGradeScale.classList.add('hidden');
+    }
+  }
+
+  if (elSummary) elSummary.innerHTML = "";
+
+  for (const q of quizQuestions) {
     const got = earned.get(q.id) || 0;
     const user = answers.get(q.id);
     const corr = q.correct;
@@ -572,16 +627,14 @@ function finish() {
       corrText = corr.map((i) => `(${i + 1}) ${q.options[i]}`).join(" | ");
     } else if (q.type === "fill") {
       userText = typeof user === "string" && user.trim() ? user.trim() : "—";
-      corrText =
-        q.explain?.correct ||
-        (Array.isArray(q.accept) && q.accept[0]) ||
-        "—";
+      corrText = q.explain?.correct || (Array.isArray(q.accept) && q.accept[0]) || "—";
     } else if (q.type === "match" || q.type === "order") {
       const ua = Array.isArray(user) ? user : [];
       userText = ua.length ? ua.join(", ") : "—";
       corrText = corr.join(", ");
     }
 
+    if (!elSummary) continue;
     const item = document.createElement("div");
     item.className = "summaryItem";
     item.innerHTML = `
@@ -597,51 +650,52 @@ function finish() {
 
 function resetAll() {
   idx = 0;
-  questions = shuffleArray(baseQuestions);
+  baseQuestions = getBaseQuestions();
+  quizQuestions = shuffleArray(baseQuestions);
   answers = new Map();
   checked = new Set();
   earned = new Map();
-  elLiveScore.textContent = "0";
+  if (elLiveScore) elLiveScore.textContent = "0";
   render();
 }
 
-btnStart.addEventListener("click", () => {
+btnStart?.addEventListener("click", () => {
   setScreen("quiz");
   render();
 });
 
-btnResetAll.addEventListener("click", () => resetAll());
+btnResetAll?.addEventListener("click", () => resetAll());
 
-btnPrev.addEventListener("click", () => {
+btnPrev?.addEventListener("click", () => {
   collectAnswer();
   if (idx > 0) idx--;
   render();
 });
 
-btnNext.addEventListener("click", () => {
+btnNext?.addEventListener("click", () => {
   collectAnswer();
-  if (idx < questions.length - 1) idx++;
+  if (idx < quizQuestions.length - 1) idx++;
   render();
 });
 
-btnCheck.addEventListener("click", () => checkCurrent());
+btnCheck?.addEventListener("click", () => checkCurrent());
 
-btnFinish.addEventListener("click", () => {
+btnFinish?.addEventListener("click", () => {
   collectAnswer();
   finish();
 });
 
-btnReview.addEventListener("click", () => {
+btnReview?.addEventListener("click", () => {
   setScreen("quiz");
   idx = 0;
   render();
 });
 
-btnRestart.addEventListener("click", () => {
+btnRestart?.addEventListener("click", () => {
   resetAll();
   setScreen("start");
 });
 
-elLiveTotal.textContent = fmtPts(totalPoints());
-elLiveCount.textContent = questions.length;
-elLiveIndex.textContent = "0";
+if (elLiveTotal) elLiveTotal.textContent = fmtPts(totalPoints());
+if (elLiveCount) elLiveCount.textContent = quizQuestions.length;
+if (elLiveIndex) elLiveIndex.textContent = "0";

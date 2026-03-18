@@ -217,7 +217,7 @@ main.wrap{
 
 .grid{
   display: grid;
-  grid-template-columns: repeat(3, minmax(0, 1fr));
+  grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
   gap: 18px;
 }
 
@@ -341,4 +341,21 @@ main.wrap{
   #logoutBtn{
     width: auto;
   }
+}
+
+.tile__desc{
+  margin: 0;
+  color: var(--muted);
+  line-height: 1.55;
+  font-size: 0.96rem;
+}
+
+.tile--featured{
+  border-color: rgba(124,92,255,0.28);
+  background: linear-gradient(180deg, rgba(124,92,255,0.10), rgba(255,255,255,0.03));
+}
+
+.tile--featured .tile__cta{
+  background: rgba(124,92,255,0.18);
+  border-color: rgba(124,92,255,0.28);
 }
