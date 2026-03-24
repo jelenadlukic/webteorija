@@ -1017,7 +1017,7 @@ select * into StrucneSkole from Skola
       wrong: []
     }
   },
-  {
+    {
     id: 251,
     points: 2.5,
     type: "match",
@@ -1040,35 +1040,35 @@ select * into StrucneSkole from Skola
     },
     correct: [2, 5, 3, 4, 1],
     explain: {
-      correct: "Tačno: SIJERA LEONE, SVETA LUCIJA → 2 | LA VALETA, LA KORUNJA → 5 | EL RENO, LA KORUNJA → 3 | EL SALVADOR, EL RENO → 4 | LAS VEGAS, LOS ANGELES → 1",
+      correct: "Tačno: SIJERA LEONE, SVETA LUCIJA → 3 | LA VALETA, LA KORUNJA → 5 | EL RENO, LA KORUNJA → 2 | EL SALVADOR, EL RENO → 4 | LAS VEGAS, LOS ANGELES → 1",
       wrong: []
     }
   },
   {
-  id: 252,
-  points: 2.5,
-  type: "match",
-  text: "Ispisati na crtama ispred relacija redni broj pod kojim je navedena odgovarajuća kardinalnost veze.",
-  match: {
-    left: [
-      "1. 1 : 1",
-      "2. 1 : M",
-      "3. M : M"
-    ],
-    right: [
-      "VLASNIK – BROJ TELEFONA (SLUŽBENI)",
-      "NASTAVNIK – PREDMET",
-      "OSOBA – PASOŠ",
-      "KUPAC – MODEL AUTOMOBILA",
-      "UTAKMICA – GRAD DOMAĆIN"
-    ]
+    id: 252,
+    points: 2.5,
+    type: "match",
+    text: "Ispisati na crtama ispred relacija redni broj pod kojim je navedena odgovarajuća kardinalnost veze.",
+    match: {
+      left: [
+        "1. 1 : 1",
+        "2. 1 : M",
+        "3. M : M"
+      ],
+      right: [
+        "VLASNIK – BROJ TELEFONA (SLUŽBENI)",
+        "NASTAVNIK – PREDMET",
+        "OSOBA – PASOŠ",
+        "KUPAC – MODEL AUTOMOBILA",
+        "UTAKMICA – GRAD DOMAĆIN"
+      ]
+    },
+    correct: [1, 3, 1, 3, 2],
+    explain: {
+      correct: "VLASNIK – BROJ TELEFONA (SLUŽBENI) → 1 : 1 | NASTAVNIK – PREDMET → M : M | OSOBA – PASOŠ → 1 : 1 | KUPAC – MODEL AUTOMOBILA → M : M | UTAKMICA – GRAD DOMAĆIN → 1 : M",
+      wrong: []
+    }
   },
-  correct: [1, 3, 1, 3, 2],
-  explain: {
-    correct: "VLASNIK – BROJ TELEFONA (SLUŽBENI) → 1 : 1 | NASTAVNIK – PREDMET → M : M | OSOBA – PASOŠ → 1 : 1 | KUPAC – MODEL AUTOMOBILA → M : M | UTAKMICA – GRAD DOMAĆIN → 1 : M",
-    wrong: []
-  }
-},
   {
     id: 253,
     points: 3,
@@ -1135,53 +1135,53 @@ select * into StrucneSkole from Skola
     }
   },
   {
-    id: 255,
-    points: 3,
-    type: "match",
-    text: "Date su tabele RADNIK i ODELJENJE. Povezati upite i njihova značenja upisom broja datog ispred opisa značenja upita na odgovarajuću liniju.",
-    tables: [
-      {
-        title: "Tabela RADNIK",
-        headers: ["IDBR", "IME", "PREZIME", "PLATA", "BROD"],
-        rows: [
-          ["5900", "Slobodan", "Golubović", "900", "10"],
-          ["5932", "Mitar", "Gavrilović", "600", ""],
-          ["5953", "Persida", "Kosanović", "1100", "20"],
-          ["6234", "Marko", "Pavlović", "1300", "30"],
-          ["6789", "Janko", "Nikolić", "800", "10"]
-        ]
-      },
-      {
-        title: "Tabela ODELJENJE",
-        headers: ["BROD", "IMEOD", "MESTO"],
-        rows: [
-          ["50", "Skladišta", "Zemun"],
-          ["30", "Marketing", "Vračar"],
-          ["10", "Plasman", "Surčin"],
-          ["20", "Direkcija", "Grocka"],
-          ["40", "Nabavka", "Barajevo"]
-        ]
-      }
-    ],
-    match: {
-      left: [
-        "1. SELECT odeljenje.imeod, radnik.prezime FROM odeljenje LEFT JOIN radnik ON radnik.brod = odeljenje.brod WHERE radnik.brod IS NULL",
-        "2. SELECT odeljenje.imeod, radnik.prezime FROM odeljenje FULL JOIN radnik ON radnik.brod = odeljenje.brod",
-        "3. SELECT odeljenje.imeod, radnik.prezime FROM odeljenje RIGHT JOIN radnik ON radnik.brod = odeljenje.brod WHERE odeljenje.brod IS NULL"
-      ],
-      right: [
-        "1. Prikazuje samo radnike koji nisu raspoređeni u odeljenja",
-        "2. Prikazuje sve radnike (i koji jesu i koji nisu raspoređeni u odeljenja) i samo ona odeljenja u kojima ima radnika",
-        "3. Prikazuje sva odeljenja - i ona u kojima ima i ona u kojima nema radnika i sve radnike – i one koji su raspoređeni u odeljenja, kao i one koji nisu raspoređeni",
-        "4. Prikazuje samo odeljenja u kojima nema radnika"
+  id: 255,
+  points: 3,
+  type: "match",
+  text: "Date su tabele RADNIK i ODELJENJE. Povezati upite i njihova značenja upisom broja datog ispred opisa značenja upita na odgovarajuću liniju.",
+  tables: [
+    {
+      title: "Tabela RADNIK",
+      headers: ["IDBR", "IME", "PREZIME", "PLATA", "BROD"],
+      rows: [
+        ["5900", "Slobodan", "Golubović", "900", "10"],
+        ["5932", "Mitar", "Gavrilović", "600", ""],
+        ["5953", "Persida", "Kosanović", "1100", "20"],
+        ["6234", "Marko", "Pavlović", "1300", "30"],
+        ["6789", "Janko", "Nikolić", "800", "10"]
       ]
     },
-    correct: [3, 2, 1],
-    explain: {
-      correct: "Tačno: samo radnici koji nisu raspoređeni → 3 | FULL JOIN → 2 | samo odeljenja u kojima nema radnika → 1",
-      wrong: []
+    {
+      title: "Tabela ODELJENJE",
+      headers: ["BROD", "IMEOD", "MESTO"],
+      rows: [
+        ["50", "Skladišta", "Zemun"],
+        ["30", "Marketing", "Vračar"],
+        ["10", "Plasman", "Surčin"],
+        ["20", "Direkcija", "Grocka"],
+        ["40", "Nabavka", "Barajevo"]
+      ]
     }
+  ],
+  match: {
+    left: [
+      "1. SELECT odeljenje.imeod, radnik.prezime FROM odeljenje LEFT JOIN radnik ON radnik.brod = odeljenje.brod WHERE radnik.brod IS NULL",
+      "2. SELECT odeljenje.imeod, radnik.prezime FROM odeljenje FULL JOIN radnik ON radnik.brod = odeljenje.brod",
+      "3. SELECT odeljenje.imeod, radnik.prezime FROM odeljenje RIGHT JOIN radnik ON radnik.brod = odeljenje.brod WHERE odeljenje.brod IS NULL"
+    ],
+    right: [
+      "1. Prikazuje samo radnike koji nisu raspoređeni u odeljenja",
+      "2. Prikazuje sve radnike (i koji jesu i koji nisu raspoređeni u odeljenja) i samo ona odeljenja u kojima ima radnika",
+      "3. Prikazuje sva odeljenja - i ona u kojima ima i ona u kojima nema radnika i sve radnike – i one koji su raspoređeni u odeljenja, kao i one koji nisu raspoređeni",
+      "4. Prikazuje samo odeljenja u kojima nema radnika"
+    ]
   },
+  correct: [4, 3, 1],
+  explain: {
+    correct: "Tačno: samo odeljenja u kojima nema radnika → 4 | FULL JOIN → 3 | samo radnici koji nisu raspoređeni → 1",
+    wrong: []
+  }
+},
   {
     id: 256,
     points: 3,
