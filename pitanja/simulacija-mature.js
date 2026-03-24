@@ -19,8 +19,15 @@ const pitanjaBaze = Array.isArray(window.QUIZ_PITANJA_BAZE_PODATAKA)
   ? window.QUIZ_PITANJA_BAZE_PODATAKA
   : [];
 
+console.log("Web dizajn:", pitanjaWebDizajn.length);
+console.log("Web programiranje:", pitanjaWebProgramiranje.length);
+console.log("Baze:", pitanjaBaze.length);
+
 window.QUIZ_PITANJA_SIMULACIJA_MATURE = shuffleArray([
   ...shuffleArray(pitanjaWebDizajn).slice(0, 10),
   ...shuffleArray(pitanjaWebProgramiranje).slice(0, 10),
   ...shuffleArray(pitanjaBaze).slice(0, 10)
 ]);
+
+console.log("Simulacija mature:", window.QUIZ_PITANJA_SIMULACIJA_MATURE.length);
+console.log(window.QUIZ_PITANJA_SIMULACIJA_MATURE);

@@ -411,7 +411,7 @@ position:relative; top:-220px; left:120px; z-index:3;">
     points: 3,
     type: "fill",
     text: "Допуните: Написати линију кода којом се укључује екстерна CSS датотека style.css у оквиру <head> (style.css и index.html су у истом директоријуму).",
-    placeholder: 'Нпр: <link rel="stylesheet" href="style.css">',
+    placeholder: '',
     accept: [
       '<link rel="stylesheet" href="style.css">',
       '<link rel="stylesheet" href="./style.css">',
