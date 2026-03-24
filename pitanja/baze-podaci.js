@@ -1,4 +1,4 @@
-const questions = [
+window.QUIZ_PITANJA_BAZE_PODATAKA = [
   {
     id: 208,
     points: 2,
