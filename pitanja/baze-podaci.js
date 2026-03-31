@@ -521,9 +521,9 @@ GROUP BY UcenikID, Ime, Prezime
       "ADD COLUMN",
       "ADD CONSTRAINT"
     ],
-    correct: [0, 2, 3, 7],
+    correct: [0, 2, 3],
     explain: {
-      correct: "Tačno: ALTER TABLE | CREATE TABLE | DROP TABLE | ADD CONSTRAINT",
+      correct: "Tačno: ALTER TABLE | CREATE TABLE | DROP TABLE",
       wrong: ["", "", "", "", "", "", "", ""]
     }
   },
@@ -1011,9 +1011,9 @@ select * into StrucneSkole from Skola
         "AND"
       ]
     },
-    correct: [3, 2, 1],
+    correct: [3, 1, 2],
     explain: {
-      correct: "Tačno: OR → 3, NOT → 2, AND → 1",
+      correct: "Tačno: OR → 3, NOT → 1, AND → 2",
       wrong: []
     }
   },
