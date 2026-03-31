@@ -49,6 +49,12 @@ const elQCode = document.getElementById("qCode");
 const elForm = document.getElementById("qForm");
 const elFeedback = document.getElementById("feedback");
 
+elForm?.addEventListener("keydown", (e) => {
+  if (e.key === "Enter") {
+    e.preventDefault();
+  }
+});
+
 const btnStart = document.getElementById("btnStart");
 const btnResetAll = document.getElementById("btnResetAll");
 const btnPrev = document.getElementById("btnPrev");
