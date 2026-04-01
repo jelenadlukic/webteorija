@@ -1038,7 +1038,7 @@ select * into StrucneSkole from Skola
         "LAS VEGAS, LOS ANGELES"
       ]
     },
-    correct: [2, 5, 3, 4, 1],
+    correct: [3, 5, 2, 4, 1],
     explain: {
       correct: "Tačno: SIJERA LEONE, SVETA LUCIJA → 3 | LA VALETA, LA KORUNJA → 5 | EL RENO, LA KORUNJA → 2 | EL SALVADOR, EL RENO → 4 | LAS VEGAS, LOS ANGELES → 1",
       wrong: []
