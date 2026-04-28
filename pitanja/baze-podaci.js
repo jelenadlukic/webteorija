@@ -1165,21 +1165,20 @@ select * into StrucneSkole from Skola
   ],
   match: {
     left: [
-      "1. SELECT odeljenje.imeod, radnik.prezime FROM odeljenje LEFT JOIN radnik ON radnik.brod = odeljenje.brod WHERE radnik.brod IS NULL",
-      "2. SELECT odeljenje.imeod, radnik.prezime FROM odeljenje FULL JOIN radnik ON radnik.brod = odeljenje.brod",
-      "3. SELECT odeljenje.imeod, radnik.prezime FROM odeljenje RIGHT JOIN radnik ON radnik.brod = odeljenje.brod WHERE odeljenje.brod IS NULL"
+      "SELECT IME, PREZIME FROM RADNIK WHERE PLATA > 1000;",
+      "SELECT RADNIK.IME, RADNIK.PREZIME, ODELJENJE.IMEOD FROM RADNIK INNER JOIN ODELJENJE ON RADNIK.BROD = ODELJENJE.BROD;",
+      "SELECT RADNIK.IME, RADNIK.PREZIME, ODELJENJE.IMEOD FROM RADNIK LEFT JOIN ODELJENJE ON RADNIK.BROD = ODELJENJE.BROD;"
     ],
     right: [
-      "1. Prikazuje samo radnike koji nisu raspoređeni u odeljenja",
-      "2. Prikazuje sve radnike (i koji jesu i koji nisu raspoređeni u odeljenja) i samo ona odeljenja u kojima ima radnika",
-      "3. Prikazuje sva odeljenja - i ona u kojima ima i ona u kojima nema radnika i sve radnike – i one koji su raspoređeni u odeljenja, kao i one koji nisu raspoređeni",
-      "4. Prikazuje samo odeljenja u kojima nema radnika"
+      "Prikazuje imena i prezimena radnika čija je plata veća od 1000.",
+      "Prikazuje samo radnike koji imaju odgovarajuće odeljenje, zajedno sa nazivom odeljenja.",
+      "Prikazuje sva odeljenja, i radnike koji rade u njima.",
+      "Prikazuje sve radnike, a za one koji imaju odeljenje prikazuje i naziv odeljenja."
     ]
   },
-  correct: [4, 3, 1],
+  correct: [1, 2, "", 3],
   explain: {
-    correct: "Tačno: samo odeljenja u kojima nema radnika → 4 | FULL JOIN → 3 | samo radnici koji nisu raspoređeni → 1",
-    wrong: []
+    correct: "Tačno rešenje je: 1, 2, bez broja, 3. Treći opis je višak jer nijedan ponuđeni upit ne prikazuje sva odeljenja."
   }
 },
   {
